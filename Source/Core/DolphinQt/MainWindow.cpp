@@ -733,8 +733,9 @@ QStringList MainWindow::PromptFileNames()
   QStringList paths = DolphinFileDialog::getOpenFileNames(
       this, tr("Select a File"),
       settings.value(QStringLiteral("mainwindow/lastdir"), QString{}).toString(),
-      QStringLiteral("%1 (*.elf *.dol *.gcm *.iso *.tgc *.wbfs *.ciso *.gcz *.wia *.rvz *.wad "
-                     "*.dff *.m3u *.json);;%2 (*)")
+      QStringLiteral(
+          "%1 (*.elf *.dol *.gcm *.iso *.bin *.tgc *.wbfs *.ciso *.gcz *.wia *.rvz *.wad "
+          "*.dff *.m3u *.json);;%2 (*)")
           .arg(tr("All GC/Wii files"))
           .arg(tr("All Files")));
 
