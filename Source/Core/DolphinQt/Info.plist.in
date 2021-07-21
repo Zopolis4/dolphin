@@ -9,10 +9,10 @@
             <array>
                 <string>ciso</string>
                 <string>dol</string>
+                <string>bin</string>
                 <string>elf</string>
                 <string>gcm</string>
                 <string>gcz</string>
-                <string>bin</string>
                 <string>iso</string>
                 <string>m3u</string>
                 <string>rvz</string>
