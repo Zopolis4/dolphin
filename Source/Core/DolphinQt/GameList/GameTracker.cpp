@@ -23,11 +23,11 @@
 // NOTE: Qt likes to be case-sensitive here even though it shouldn't be thus this ugly regex hack
 static const QStringList game_filters{
     QStringLiteral("*.[gG][cC][mM]"), QStringLiteral("*.[iI][sS][oO]"),
-    QStringLiteral("*.[bB][iI][nN]"), QStringLiteral("*.[tT][gG][cC]"), 
-    QStringLiteral("*.[cC][iI][sS][oO]"), QStringLiteral("*.[gG][cC][zZ]"), 
-    QStringLiteral("*.[wW][bB][fF][sS]"), QStringLiteral("*.[wW][iI][aA]"), 
-    QStringLiteral("*.[rR][vV][zZ]"), QStringLiteral("*.[wW][aA][dD]"), 
-    QStringLiteral("*.[eE][lL][fF]"), QStringLiteral("*.[dD][oO][lL]")};
+    QStringLiteral("*.[tT][gG][cC]"), QStringLiteral("*.[cC][iI][sS][oO]"),
+    QStringLiteral("*.[gG][cC][zZ]"), QStringLiteral("*.[wW][bB][fF][sS]"),
+    QStringLiteral("*.[wW][iI][aA]"), QStringLiteral("*.[rR][vV][zZ]"),
+    QStringLiteral("*.[wW][aA][dD]"), QStringLiteral("*.[eE][lL][fF]"),
+    QStringLiteral("*.[dD][oO][lL]"), QStringLiteral("*.[bB][iI][nN]")};
 
 GameTracker::GameTracker(QObject* parent) : QFileSystemWatcher(parent)
 {
