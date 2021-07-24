@@ -48,6 +48,19 @@ void JitArm64::FixGTBeforeSettingCRFieldBit(Arm64Gen::ARM64Reg reg)
   gpr.Unlock(WA);
 }
 
+void JitArm64::UpdateRoundingMode()
+{
+  const BitSet32 gprs_to_save = gpr.GetCallerSavedUsed();
+  const BitSet32 fprs_to_save = fpr.GetCallerSavedUsed();
+
+  ABI_PushRegisters(gprs_to_save);
+  m_float_emit.ABI_PushRegisters(fprs_to_save, ARM64Reg::X8);
+  MOVP2R(ARM64Reg::X8, &PowerPC::RoundingModeUpdated);
+  BLR(ARM64Reg::X8);
+  m_float_emit.ABI_PopRegisters(fprs_to_save, ARM64Reg::X8);
+  ABI_PopRegisters(gprs_to_save);
+}
+
 void JitArm64::mtmsr(UGeckoInstruction inst)
 {
   INSTRUCTION_START
@@ -56,8 +69,8 @@ void JitArm64::mtmsr(UGeckoInstruction inst)
   gpr.BindToRegister(inst.RS, true);
   STR(IndexType::Unsigned, gpr.R(inst.RS), PPC_REG, PPCSTATE_OFF(msr));
 
-  gpr.Flush(FlushMode::All);
-  fpr.Flush(FlushMode::All);
+  gpr.Flush(FlushMode::All, ARM64Reg::INVALID_REG);
+  fpr.Flush(FlushMode::All, ARM64Reg::INVALID_REG);
 
   // Our jit cache also stores some MSR bits, as they have changed, we either
   // have to validate them in the BLR/RET check, or just flush the stack here.
@@ -213,13 +226,12 @@ void JitArm64::twx(UGeckoInstruction inst)
   SwitchToFarCode();
   SetJumpTarget(far_addr);
 
-  gpr.Flush(FlushMode::MaintainState);
-  fpr.Flush(FlushMode::MaintainState);
+  gpr.Flush(FlushMode::MaintainState, WA);
+  fpr.Flush(FlushMode::MaintainState, ARM64Reg::INVALID_REG);
 
   LDR(IndexType::Unsigned, WA, PPC_REG, PPCSTATE_OFF(Exceptions));
   ORR(WA, WA, LogicalImm(EXCEPTION_PROGRAM, 32));
   STR(IndexType::Unsigned, WA, PPC_REG, PPCSTATE_OFF(Exceptions));
-  gpr.Unlock(WA);
 
   WriteExceptionExit(js.compilerPC, false, true);
 
@@ -229,10 +241,12 @@ void JitArm64::twx(UGeckoInstruction inst)
 
   if (!analyzer.HasOption(PPCAnalyst::PPCAnalyzer::OPTION_CONDITIONAL_CONTINUE))
   {
-    gpr.Flush(FlushMode::All);
-    fpr.Flush(FlushMode::All);
+    gpr.Flush(FlushMode::All, WA);
+    fpr.Flush(FlushMode::All, ARM64Reg::INVALID_REG);
     WriteExit(js.compilerPC + 4);
   }
+
+  gpr.Unlock(WA);
 }
 
 void JitArm64::mfspr(UGeckoInstruction inst)
@@ -753,4 +767,24 @@ void JitArm64::mffsx(UGeckoInstruction inst)
 
   gpr.Unlock(WA);
   gpr.Unlock(WB);
+}
+
+void JitArm64::mtfsb0x(UGeckoInstruction inst)
+{
+  INSTRUCTION_START
+  JITDISABLE(bJITSystemRegistersOff);
+  FALLBACK_IF(inst.Rc);
+
+  u32 mask = ~(0x80000000 >> inst.CRBD);
+
+  ARM64Reg WA = gpr.GetReg();
+
+  LDR(IndexType::Unsigned, WA, PPC_REG, PPCSTATE_OFF(fpscr));
+  AND(WA, WA, LogicalImm(mask, 32));
+  STR(IndexType::Unsigned, WA, PPC_REG, PPCSTATE_OFF(fpscr));
+
+  gpr.Unlock(WA);
+
+  if (inst.CRBD >= 29)
+    UpdateRoundingMode();
 }
