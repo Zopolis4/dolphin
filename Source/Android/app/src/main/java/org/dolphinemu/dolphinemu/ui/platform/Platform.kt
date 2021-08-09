@@ -23,6 +23,9 @@ enum class Platform(private val value: Int, val headerName: Int, val idString: S
 
         @JvmStatic
         fun fromNativeInt(i: Int): Platform {
+            // TODO: Proper support for Triforce games
+            if (i >= 1)
+              i--;
             // TODO: Proper support for DOL and ELF files
             val inRange = i >= 0 && i < values().size
             return values()[if (inRange) i else WIIWARE.value]
