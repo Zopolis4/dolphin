@@ -1,7 +1,7 @@
 // Copyright 2008 Dolphin Emulator Project
 // SPDX-License-Identifier: GPL-2.0-or-later
 
-#include "DiscIO/VolumeGC.h"
+#include "DiscIO/VolumeTri.h"
 
 #include <cstddef>
 #include <map>
@@ -27,11 +27,10 @@
 #include "DiscIO/FileSystemGCWii.h"
 #include "DiscIO/Filesystem.h"
 #include "DiscIO/Volume.h"
-#include "DiscIO/VolumeTri.h"
 
 namespace DiscIO
 {
-  VolumeGC::VolumeGC(std::unique_ptr<BlobReader> reader) : m_reader(std::move(reader))
+VolumeTri::VolumeTri(std::unique_ptr<BlobReader> reader) : m_reader(std::move(reader))
 {
   ASSERT(m_reader);
 
@@ -43,12 +42,11 @@ namespace DiscIO
   m_converted_banner = [this] { return LoadBannerFile(); };
 }
 
-VolumeGC::~VolumeGC()
+VolumeTri::~VolumeTri()
 {
 }
 
-
-bool VolumeGC::Read(u64 offset, u64 length, u8* buffer, const Partition& partition) const
+bool VolumeTri::Read(u64 offset, u64 length, u8* buffer, const Partition& partition) const
 {
   if (partition != PARTITION_NONE)
     return false;
@@ -56,106 +54,90 @@ bool VolumeGC::Read(u64 offset, u64 length, u8* buffer, const Partition& partiti
   return m_reader->Read(offset, length, buffer);
 }
 
-const FileSystem* VolumeGC::GetFileSystem(const Partition& partition) const
+const FileSystem* VolumeTri::GetFileSystem(const Partition& partition) const
 {
   return m_file_system->get();
 }
 
-std::string VolumeGC::GetGameTDBID(const Partition& partition) const
+std::string VolumeTri::GetGameTDBID(const Partition& partition) const
 {
   const std::string game_id = GetGameID(partition);
-
-  // Don't return an ID for Datel discs that are using the game ID of NHL Hitz 2002
-  return game_id == "GNHE5d" && IsDatelDisc() ? "" : game_id;
+  return game_id;
 }
 
-Region VolumeGC::GetRegion() const
+Region VolumeTri::GetRegion() const
 {
   return RegionCodeToRegion(m_reader->ReadSwapped<u32>(0x458));
 }
 
-std::map<Language, std::string> VolumeGC::GetShortNames() const
+std::map<Language, std::string> VolumeTri::GetShortNames() const
 {
   return m_converted_banner->short_names;
 }
 
-std::map<Language, std::string> VolumeGC::GetLongNames() const
+std::map<Language, std::string> VolumeTri::GetLongNames() const
 {
   return m_converted_banner->long_names;
 }
 
-std::map<Language, std::string> VolumeGC::GetShortMakers() const
+std::map<Language, std::string> VolumeTri::GetShortMakers() const
 {
   return m_converted_banner->short_makers;
 }
 
-std::map<Language, std::string> VolumeGC::GetLongMakers() const
+std::map<Language, std::string> VolumeTri::GetLongMakers() const
 {
   return m_converted_banner->long_makers;
 }
 
-std::map<Language, std::string> VolumeGC::GetDescriptions() const
+std::map<Language, std::string> VolumeTri::GetDescriptions() const
 {
   return m_converted_banner->descriptions;
 }
 
-std::vector<u32> VolumeGC::GetBanner(u32* width, u32* height) const
+std::vector<u32> VolumeTri::GetBanner(u32* width, u32* height) const
 {
   *width = m_converted_banner->image_width;
   *height = m_converted_banner->image_height;
   return m_converted_banner->image_buffer;
 }
 
-BlobType VolumeGC::GetBlobType() const
+BlobType VolumeTri::GetBlobType() const
 {
   return m_reader->GetBlobType();
 }
 
-u64 VolumeGC::GetSize() const
+u64 VolumeTri::GetSize() const
 {
   return m_reader->GetDataSize();
 }
 
-bool VolumeGC::IsSizeAccurate() const
+bool VolumeTri::IsSizeAccurate() const
 {
   return m_reader->IsDataSizeAccurate();
 }
 
-u64 VolumeGC::GetRawSize() const
+u64 VolumeTri::GetRawSize() const
 {
   return m_reader->GetRawSize();
 }
 
-const BlobReader& VolumeGC::GetBlobReader() const
+const BlobReader& VolumeTri::GetBlobReader() const
 {
   return *m_reader;
 }
 
-std::unique_ptr<BlobReader>& VolumeGC::GetBlobReaderPtr()
+Platform VolumeTri::GetVolumeType() const
 {
-  return m_reader;
+  return Platform::Triforce;
 }
 
-Platform VolumeGC::GetVolumeType() const
+bool VolumeTri::IsDatelDisc() const
 {
-  return Platform::GameCubeDisc;
+  return false;
 }
 
-bool VolumeGC::IsTriforceGame() const
-{
-  constexpr u32 BTID_MAGIC = 0x44495442;
-  BootID triforce_header;
-  ReadFile(*this, PARTITION_NONE, "boot.id", reinterpret_cast<u8*>(&triforce_header),
-           sizeof(BootID));
-  return triforce_header.id == BTID_MAGIC;
-}
-
-bool VolumeGC::IsDatelDisc() const
-{
-  return !GetBootDOLOffset(*this, PARTITION_NONE).has_value();
-}
-
-std::array<u8, 20> VolumeGC::GetSyncHash() const
+std::array<u8, 20> VolumeTri::GetSyncHash() const
 {
   mbedtls_sha1_context context;
   mbedtls_sha1_init(&context);
@@ -168,7 +150,7 @@ std::array<u8, 20> VolumeGC::GetSyncHash() const
   return hash;
 }
 
-VolumeGC::ConvertedGCBanner VolumeGC::LoadBannerFile() const
+VolumeTri::ConvertedGCBanner VolumeTri::LoadBannerFile() const
 {
   GCBanner banner_file;
   const u64 file_size = ReadFile(*this, PARTITION_NONE, "opening.bnr",
@@ -200,7 +182,7 @@ VolumeGC::ConvertedGCBanner VolumeGC::LoadBannerFile() const
   return ExtractBannerInformation(banner_file, is_bnr1);
 }
 
-VolumeGC::ConvertedGCBanner VolumeGC::ExtractBannerInformation(const GCBanner& banner_file,
+VolumeTri::ConvertedGCBanner VolumeTri::ExtractBannerInformation(const GCBanner& banner_file,
                                                                bool is_bnr1) const
 {
   ConvertedGCBanner banner;
@@ -254,6 +236,6 @@ VolumeGC::ConvertedGCBanner VolumeGC::ExtractBannerInformation(const GCBanner& b
   return banner;
 }
 
-VolumeGC::ConvertedGCBanner::ConvertedGCBanner() = default;
-VolumeGC::ConvertedGCBanner::~ConvertedGCBanner() = default;
+VolumeTri::ConvertedGCBanner::ConvertedGCBanner() = default;
+VolumeTri::ConvertedGCBanner::~ConvertedGCBanner() = default;
 }  // namespace DiscIO

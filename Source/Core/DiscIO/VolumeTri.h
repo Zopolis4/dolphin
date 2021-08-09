@@ -25,11 +25,11 @@ enum class Language;
 enum class Region;
 enum class Platform;
 
-class VolumeGC : public VolumeDisc
+class VolumeTri : public VolumeDisc
 {
 public:
-  VolumeGC(std::unique_ptr<BlobReader> reader);
-  ~VolumeGC();
+  VolumeTri(std::unique_ptr<BlobReader> reader);
+  ~VolumeTri();
   bool Read(u64 offset, u64 length, u8* buffer,
             const Partition& partition = PARTITION_NONE) const override;
   const FileSystem* GetFileSystem(const Partition& partition = PARTITION_NONE) const override;
@@ -42,7 +42,6 @@ public:
   std::vector<u32> GetBanner(u32* width, u32* height) const override;
 
   Platform GetVolumeType() const override;
-  bool IsTriforceGame() const;
   bool IsDatelDisc() const override;
   Region GetRegion() const override;
   BlobType GetBlobType() const override;
@@ -50,7 +49,6 @@ public:
   bool IsSizeAccurate() const override;
   u64 GetRawSize() const override;
   const BlobReader& GetBlobReader() const override;
-  std::unique_ptr<BlobReader>& GetBlobReaderPtr();
 
   std::array<u8, 20> GetSyncHash() const override;
 
@@ -76,11 +74,6 @@ private:
     u16 image[GC_BANNER_WIDTH * GC_BANNER_HEIGHT];  // RGB5A3 96x32 image
     GCBannerInformation information[6];             // information comes in six languages
                                                     // (only one for BNR1 type)
-  };
-
-  struct BootID
-  {
-    u32 id;  // BTID
   };
 
   struct ConvertedGCBanner

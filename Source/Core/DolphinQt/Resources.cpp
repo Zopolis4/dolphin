@@ -76,7 +76,7 @@ QPixmap Resources::GetScaledPixmap(const std::string& name)
 void Resources::Init()
 {
   for (const std::string& platform :
-       {"Platform_Gamecube", "Platform_Wii", "Platform_Wad", "Platform_File"})
+       {"Platform_Gamecube", "Platform_Triforce", "Platform_Wii", "Platform_Wad", "Platform_File"})
   {
     m_platforms.append(GetScaledPixmap(platform));
   }

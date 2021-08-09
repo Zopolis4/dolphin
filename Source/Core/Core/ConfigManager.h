@@ -246,6 +246,7 @@ struct SConfig
   bool m_ListElfDol;
   bool m_ListWii;
   bool m_ListGC;
+  bool m_ListTri;
   bool m_ListPal;
   bool m_ListUsa;
   bool m_ListJap;

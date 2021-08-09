@@ -25,6 +25,7 @@
 #include "DiscIO/VolumeGC.h"
 #include "DiscIO/VolumeWad.h"
 #include "DiscIO/VolumeWii.h"
+#include "DiscIO/VolumeTri.h"
 
 namespace DiscIO
 {
@@ -91,9 +92,15 @@ static std::unique_ptr<VolumeDisc> CreateDisc(std::unique_ptr<BlobReader>& reade
     return std::make_unique<VolumeWii>(std::move(reader));
 
   if (reader->ReadSwapped<u32>(0x1C) == GAMECUBE_DISC_MAGIC)
-    return std::make_unique<VolumeGC>(std::move(reader));
+  {
+    auto volume = std::make_unique<VolumeGC>(std::move(reader));
+    if (volume->IsTriforceGame())
+      return std::make_unique<VolumeTri>(std::move(volume->GetBlobReaderPtr()));
+    else
+      return volume;
+  }
 
-  // No known magic words found
+    // No known magic words found
   return nullptr;
 }
 
