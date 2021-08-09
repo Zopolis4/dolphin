@@ -323,14 +323,14 @@ void Interpreter::lwzu(UGeckoInstruction inst)
 
 void Interpreter::stb(UGeckoInstruction inst)
 {
-  PowerPC::Write_U8((u8)rGPR[inst.RS], Helper_Get_EA(PowerPC::ppcState, inst));
+  PowerPC::Write_U8(rGPR[inst.RS], Helper_Get_EA(PowerPC::ppcState, inst));
 }
 
 void Interpreter::stbu(UGeckoInstruction inst)
 {
   const u32 address = Helper_Get_EA_U(PowerPC::ppcState, inst);
 
-  PowerPC::Write_U8((u8)rGPR[inst.RS], address);
+  PowerPC::Write_U8(rGPR[inst.RS], address);
   if (!(PowerPC::ppcState.Exceptions & EXCEPTION_DSI))
   {
     rGPR[inst.RA] = address;
@@ -399,14 +399,14 @@ void Interpreter::stfsu(UGeckoInstruction inst)
 
 void Interpreter::sth(UGeckoInstruction inst)
 {
-  PowerPC::Write_U16((u16)rGPR[inst.RS], Helper_Get_EA(PowerPC::ppcState, inst));
+  PowerPC::Write_U16(rGPR[inst.RS], Helper_Get_EA(PowerPC::ppcState, inst));
 }
 
 void Interpreter::sthu(UGeckoInstruction inst)
 {
   const u32 address = Helper_Get_EA_U(PowerPC::ppcState, inst);
 
-  PowerPC::Write_U16((u16)rGPR[inst.RS], address);
+  PowerPC::Write_U16(rGPR[inst.RS], address);
   if (!(PowerPC::ppcState.Exceptions & EXCEPTION_DSI))
   {
     rGPR[inst.RA] = address;
@@ -443,7 +443,7 @@ void Interpreter::dcbf(UGeckoInstruction inst)
   // the lack of precise L1 icache emulation in the JIT. (Portable software
   // should use icbi consistently, but games aren't portable.)
   const u32 address = Helper_Get_EA_X(PowerPC::ppcState, inst);
-  JitInterface::InvalidateICache(address & ~0x1f, 32, false);
+  JitInterface::InvalidateICacheLine(address);
 }
 
 void Interpreter::dcbi(UGeckoInstruction inst)
@@ -461,7 +461,7 @@ void Interpreter::dcbi(UGeckoInstruction inst)
   // the lack of precise L1 icache emulation in the JIT. (Portable software
   // should use icbi consistently, but games aren't portable.)
   const u32 address = Helper_Get_EA_X(PowerPC::ppcState, inst);
-  JitInterface::InvalidateICache(address & ~0x1f, 32, false);
+  JitInterface::InvalidateICacheLine(address);
 }
 
 void Interpreter::dcbst(UGeckoInstruction inst)
@@ -473,7 +473,7 @@ void Interpreter::dcbst(UGeckoInstruction inst)
   // the lack of precise L1 icache emulation in the JIT. (Portable software
   // should use icbi consistently, but games aren't portable.)
   const u32 address = Helper_Get_EA_X(PowerPC::ppcState, inst);
-  JitInterface::InvalidateICache(address & ~0x1f, 32, false);
+  JitInterface::InvalidateICacheLine(address);
 }
 
 void Interpreter::dcbt(UGeckoInstruction inst)
@@ -731,7 +731,7 @@ void Interpreter::stbux(UGeckoInstruction inst)
 {
   const u32 address = Helper_Get_EA_UX(PowerPC::ppcState, inst);
 
-  PowerPC::Write_U8((u8)rGPR[inst.RS], address);
+  PowerPC::Write_U8(rGPR[inst.RS], address);
   if (!(PowerPC::ppcState.Exceptions & EXCEPTION_DSI))
   {
     rGPR[inst.RA] = address;
@@ -740,7 +740,7 @@ void Interpreter::stbux(UGeckoInstruction inst)
 
 void Interpreter::stbx(UGeckoInstruction inst)
 {
-  PowerPC::Write_U8((u8)rGPR[inst.RS], Helper_Get_EA_X(PowerPC::ppcState, inst));
+  PowerPC::Write_U8(rGPR[inst.RS], Helper_Get_EA_X(PowerPC::ppcState, inst));
 }
 
 void Interpreter::stfdux(UGeckoInstruction inst)
@@ -819,14 +819,14 @@ void Interpreter::stfsx(UGeckoInstruction inst)
 
 void Interpreter::sthbrx(UGeckoInstruction inst)
 {
-  PowerPC::Write_U16(Common::swap16((u16)rGPR[inst.RS]), Helper_Get_EA_X(PowerPC::ppcState, inst));
+  PowerPC::Write_U16_Swap(rGPR[inst.RS], Helper_Get_EA_X(PowerPC::ppcState, inst));
 }
 
 void Interpreter::sthux(UGeckoInstruction inst)
 {
   const u32 address = Helper_Get_EA_UX(PowerPC::ppcState, inst);
 
-  PowerPC::Write_U16((u16)rGPR[inst.RS], address);
+  PowerPC::Write_U16(rGPR[inst.RS], address);
   if (!(PowerPC::ppcState.Exceptions & EXCEPTION_DSI))
   {
     rGPR[inst.RA] = address;
@@ -835,7 +835,7 @@ void Interpreter::sthux(UGeckoInstruction inst)
 
 void Interpreter::sthx(UGeckoInstruction inst)
 {
-  PowerPC::Write_U16((u16)rGPR[inst.RS], Helper_Get_EA_X(PowerPC::ppcState, inst));
+  PowerPC::Write_U16(rGPR[inst.RS], Helper_Get_EA_X(PowerPC::ppcState, inst));
 }
 
 // lswi - bizarro string instruction
@@ -968,7 +968,7 @@ void Interpreter::stwbrx(UGeckoInstruction inst)
 {
   const u32 address = Helper_Get_EA_X(PowerPC::ppcState, inst);
 
-  PowerPC::Write_U32(Common::swap32(rGPR[inst.RS]), address);
+  PowerPC::Write_U32_Swap(rGPR[inst.RS], address);
 }
 
 // The following two instructions are for SMP communications. On a single

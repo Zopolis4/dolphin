@@ -9,6 +9,7 @@
             <array>
                 <string>ciso</string>
                 <string>dol</string>
+                <string>bin</string>
                 <string>elf</string>
                 <string>gcm</string>
                 <string>gcz</string>
