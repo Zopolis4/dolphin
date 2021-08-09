@@ -264,6 +264,8 @@ bool GameListModel::ShouldDisplayGameListItem(int index) const
     {
     case DiscIO::Platform::GameCubeDisc:
       return SConfig::GetInstance().m_ListGC;
+    case DiscIO::Platform::Triforce:
+      return SConfig::GetInstance().m_ListTri;
     case DiscIO::Platform::WiiDisc:
       return SConfig::GetInstance().m_ListWii;
     case DiscIO::Platform::WiiWAD:
