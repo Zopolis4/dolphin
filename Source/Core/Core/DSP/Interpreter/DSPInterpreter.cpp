@@ -250,10 +250,7 @@ bool Interpreter::CheckCondition(u8 condition) const
   const auto IsCarry = [this] { return IsSRFlagSet(SR_CARRY); };
   const auto IsOverflow = [this] { return IsSRFlagSet(SR_OVERFLOW); };
   const auto IsOverS32 = [this] { return IsSRFlagSet(SR_OVER_S32); };
-  const auto IsLess = [this] {
-    const auto& state = m_dsp_core.DSPState();
-    return (state.r.sr & SR_OVERFLOW) != (state.r.sr & SR_SIGN);
-  };
+  const auto IsLess = [this] { return IsSRFlagSet(SR_OVERFLOW) != IsSRFlagSet(SR_SIGN); };
   const auto IsZero = [this] { return IsSRFlagSet(SR_ARITH_ZERO); };
   const auto IsLogicZero = [this] { return IsSRFlagSet(SR_LOGIC_ZERO); };
   const auto IsConditionA = [this] {
@@ -397,13 +394,14 @@ s16 Interpreter::GetAXHigh(s32 reg) const
 s64 Interpreter::GetLongAcc(s32 reg) const
 {
   const auto& state = m_dsp_core.DSPState();
-  return static_cast<s64>(state.r.ac[reg].val << 24) >> 24;
+  return static_cast<s64>(state.r.ac[reg].val);
 }
 
 void Interpreter::SetLongAcc(s32 reg, s64 value)
 {
   auto& state = m_dsp_core.DSPState();
-  state.r.ac[reg].val = static_cast<u64>(value);
+  // 40-bit sign extension
+  state.r.ac[reg].val = static_cast<u64>((value << (64 - 40)) >> (64 - 40));
 }
 
 s16 Interpreter::GetAccLow(s32 reg) const
@@ -690,11 +688,11 @@ void Interpreter::OpWriteRegister(int reg_, u16 val)
 
   switch (reg)
   {
-  // 8-bit sign extended registers. Should look at prod.h too...
+  // 8-bit sign extended registers.
   case DSP_REG_ACH0:
   case DSP_REG_ACH1:
-    // sign extend from the bottom 8 bits.
-    state.r.ac[reg - DSP_REG_ACH0].h = (u16)(s16)(s8)(u8)val;
+    // Sign extend from the bottom 8 bits.
+    state.r.ac[reg - DSP_REG_ACH0].h = static_cast<s8>(val);
     break;
 
   // Stack registers.
@@ -723,10 +721,10 @@ void Interpreter::OpWriteRegister(int reg_, u16 val)
     state.r.wr[reg - DSP_REG_WR0] = val;
     break;
   case DSP_REG_CR:
-    state.r.cr = val;
+    state.r.cr = val & 0x00ff;
     break;
   case DSP_REG_SR:
-    state.r.sr = val;
+    state.r.sr = val & ~SR_100;
     break;
   case DSP_REG_PRODL:
     state.r.prod.l = val;
@@ -735,7 +733,8 @@ void Interpreter::OpWriteRegister(int reg_, u16 val)
     state.r.prod.m = val;
     break;
   case DSP_REG_PRODH:
-    state.r.prod.h = val;
+    // Unlike ac0.h and ac1.h, prod.h is not sign-extended
+    state.r.prod.h = val & 0x00ff;
     break;
   case DSP_REG_PRODM2:
     state.r.prod.m2 = val;
