@@ -814,6 +814,13 @@ void ExecuteCommand(ReplyType reply_type)
   DIInterruptType interrupt_type = DIInterruptType::TCINT;
   bool command_handled_by_thread = false;
 
+  // Swaps endian of Triforce DI commands, and zeroes out random bytes to prevent unknown read
+  // subcommand errors
+  if (DVDThread::GetDiscType() == DiscIO::Platform::Triforce)
+  {
+    s_DICMDBUF[0] <<= 24;
+  }
+
   // DVDLowRequestError needs access to the error code set by the previous command
   if (static_cast<DICommand>(s_DICMDBUF[0] >> 24) != DICommand::RequestError)
     SetDriveError(DriveError::None);
@@ -854,7 +861,6 @@ void ExecuteCommand(ReplyType reply_type)
     case 0x00:  // Read Sector
     {
       const u64 dvd_offset = static_cast<u64>(s_DICMDBUF[1]) << 2;
-
       INFO_LOG_FMT(
           DVDINTERFACE,
           "Read: DVDOffset={:08x}, DMABuffer = {:08x}, SrcLength = {:08x}, DMALength = {:08x}",
@@ -862,7 +868,42 @@ void ExecuteCommand(ReplyType reply_type)
 
       if (s_drive_state == DriveState::ReadyNoReadsMade)
         SetDriveState(DriveState::Ready);
-
+      if (DVDThread::GetDiscType() == DiscIO::Platform::Triforce)
+      {
+        if ((dvd_offset & 0x80000000) != 0)
+        {
+          switch (dvd_offset)
+          {
+          // Media board status (1)
+          case 0x80000000:
+            Memory::Memset(s_DIMAR, 0, s_DICMDBUF[2]);
+            break;
+          // Media board status (2)
+          case 0x80000020:
+            Memory::Memset(s_DIMAR, 0, s_DICMDBUF[2]);
+            break;
+          // Media board status (3)
+          case 0x80000040:
+            Memory::Memset(s_DIMAR, 0xFF, s_DICMDBUF[2]);
+            // DIMM size
+            Memory::Write_U32(0x20, s_DIMAR);
+            // GCAM signature
+            Memory::Write_U32(0x4743414D, s_DIMAR + 4);
+            break;
+          // Firmware status (1)
+          case 0x80000120:
+            Memory::Memset(s_DIMAR, 0x01, s_DICMDBUF[2]);
+            break;
+          // Firmware status (2)
+          case 0x80000140:
+            Memory::Memset(s_DIMAR, 0x01, s_DICMDBUF[2]);
+            break;
+          default:
+            ERROR_LOG_FMT(DVDINTERFACE, "Unknown Media Board Read");
+            break;
+          }
+        }
+      }
       command_handled_by_thread =
           ExecuteReadCommand(dvd_offset, s_DIMAR, s_DICMDBUF[2], s_DILENGTH, DiscIO::PARTITION_NONE,
                              reply_type, &interrupt_type);
