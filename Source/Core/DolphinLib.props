@@ -436,6 +436,7 @@
     <ClInclude Include="DiscIO\VolumeDisc.h" />
     <ClInclude Include="DiscIO\VolumeFileBlobReader.h" />
     <ClInclude Include="DiscIO\VolumeGC.h" />
+    <ClInclude Include="DiscIO\VolumeTri.h" />
     <ClInclude Include="DiscIO\VolumeVerifier.h" />
     <ClInclude Include="DiscIO\VolumeWad.h" />
     <ClInclude Include="DiscIO\VolumeWii.h" />
@@ -1017,6 +1018,7 @@
     <ClCompile Include="DiscIO\VolumeDisc.cpp" />
     <ClCompile Include="DiscIO\VolumeFileBlobReader.cpp" />
     <ClCompile Include="DiscIO\VolumeGC.cpp" />
+    <ClCompile Include="DiscIO\VolumeTri.cpp" />
     <ClCompile Include="DiscIO\VolumeVerifier.cpp" />
     <ClCompile Include="DiscIO\VolumeWad.cpp" />
     <ClCompile Include="DiscIO\VolumeWii.cpp" />
