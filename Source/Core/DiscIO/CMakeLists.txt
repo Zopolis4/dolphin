@@ -40,6 +40,8 @@ add_library(discio
   VolumeFileBlobReader.h
   VolumeGC.cpp
   VolumeGC.h
+	VolumeTri.cpp
+	VolumeTri.h
   VolumeVerifier.cpp
   VolumeVerifier.h
   VolumeWad.cpp
