@@ -23,9 +23,7 @@ enum TEXIDevices : int
   EXIDEVICE_AD16,
   EXIDEVICE_MIC,
   EXIDEVICE_ETH,
-  // Was used for Triforce in the past, but the implementation is no longer in Dolphin.
-  // It's kept here so that values below will stay constant.
-  EXIDEVICE_AM_BASEBOARD,
+  EXIDEVICE_BASEBOARD,
   EXIDEVICE_GECKO,
   // Only used when creating a device by EXIDevice_Create.
   // Converted to EXIDEVICE_MEMORYCARD internally.

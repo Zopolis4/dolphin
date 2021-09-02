@@ -62,6 +62,21 @@ void AddMemoryCards(int i)
 
   g_Channels[i]->AddDevice(memorycard_device, 0);
 }
+
+void AddSP1Device()
+{
+  TEXIDevices sp1_device;
+  if (SConfig::GetInstance().bTri)
+  {
+    sp1_device = EXIDEVICE_BASEBOARD;
+  }
+  else
+  {
+    sp1_device = SConfig::GetInstance().m_EXIDevice[2];
+  }
+
+  g_Channels[0]->AddDevice(sp1_device, 2);
+}
 }  // namespace
 
 void Init()
@@ -100,8 +115,8 @@ void Init()
   for (int i = 0; i < MAX_MEMORYCARD_SLOTS; i++)
     AddMemoryCards(i);
 
+  AddSP1Device();
   g_Channels[0]->AddDevice(EXIDEVICE_MASKROM, 1);
-  g_Channels[0]->AddDevice(SConfig::GetInstance().m_EXIDevice[2], 2);  // Serial Port 1
   g_Channels[2]->AddDevice(EXIDEVICE_AD16, 0);
 
   changeDevice = CoreTiming::RegisterEvent("ChangeEXIDevice", ChangeDeviceCallback);
