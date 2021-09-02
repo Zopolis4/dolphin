@@ -37,8 +37,6 @@ void CEXIBaseboard::TransferByte(u8& byte)
     {
     case init:
     {
-      INFO_LOG_FMT(EXPANSIONINTERFACE, "EXI BASEBOARD: ok so the init is done be done now {:#x}",
-                   m_command);
       constexpr std::array<u8, 4> ID = {0x06, 0x04, 0x10, 0x00};
       byte = ID[(m_position - 2) & 3];
       break;
