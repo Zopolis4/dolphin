@@ -11,8 +11,6 @@
 namespace ExpansionInterface
 {
 CEXIBaseboard::CEXIBaseboard() = default;
-{
-}
 
 void CEXIBaseboard::SetCS(int cs)
 {

@@ -43,8 +43,6 @@ VolumeTri::VolumeTri(std::unique_ptr<BlobReader> reader) : m_reader(std::move(re
 }
 
 VolumeTri::~VolumeTri() = default;
-{
-}
 
 bool VolumeTri::Read(u64 offset, u64 length, u8* buffer, const Partition& partition) const
 {
