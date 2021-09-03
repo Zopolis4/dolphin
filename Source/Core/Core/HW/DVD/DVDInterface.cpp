@@ -878,7 +878,7 @@ void ExecuteCommand(ReplyType reply_type)
           {
           // Media board status (1)
           case 0x80000000:
-            memset(Memory::GetPointer(s_DIMAR), 0, s_DICMDBUF[2]);
+            Memory::Memset(s_DIMAR, 0, s_DICMDBUF[2]);
             break;
           // Media board status (2)
           case 0x80000020:
