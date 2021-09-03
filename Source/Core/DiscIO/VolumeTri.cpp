@@ -42,7 +42,7 @@ VolumeTri::VolumeTri(std::unique_ptr<BlobReader> reader) : m_reader(std::move(re
   m_converted_banner = [this] { return LoadBannerFile(); };
 }
 
-VolumeTri::~VolumeTri()
+VolumeTri::~VolumeTri() = default;
 {
 }
 

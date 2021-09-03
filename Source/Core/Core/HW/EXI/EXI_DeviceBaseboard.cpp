@@ -10,7 +10,7 @@
 
 namespace ExpansionInterface
 {
-CEXIBaseboard::CEXIBaseboard()
+CEXIBaseboard::CEXIBaseboard() = default;
 {
 }
 
@@ -37,7 +37,7 @@ void CEXIBaseboard::TransferByte(u8& byte)
     {
     case init:
     {
-      constexpr std::array<u8, 4> ID = {0x06, 0x04, 0x10, 0x00};
+      static constexpr std::array<u8, 4> ID = {0x06, 0x04, 0x10, 0x00};
       byte = ID[(m_position - 2) & 3];
       break;
     }

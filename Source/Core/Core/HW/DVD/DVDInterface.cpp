@@ -886,7 +886,7 @@ void ExecuteCommand(ReplyType reply_type)
             break;
           // Media board status (3)
           case 0x80000040:
-            memset(Memory::GetPointer(s_DIMAR), 0xFFFFFFFF, s_DICMDBUF[2]);
+            memset(Memory::GetPointer(s_DIMAR), 0xFF, s_DICMDBUF[2]);
             // DIMM size
             Memory::Write_U32(0x20, s_DIMAR);
             // GCAM signature
@@ -894,11 +894,11 @@ void ExecuteCommand(ReplyType reply_type)
             break;
           // Firmware status (1)
           case 0x80000120:
-            memset(Memory::GetPointer(s_DIMAR), 0x01010101, s_DICMDBUF[2]);
+            memset(Memory::GetPointer(s_DIMAR), 0x01, s_DICMDBUF[2]);
             break;
           // Firmware status (2)
           case 0x80000140:
-            memset(Memory::GetPointer(s_DIMAR), 0x01010101, s_DICMDBUF[2]);
+            memset(Memory::GetPointer(s_DIMAR), 0x01, s_DICMDBUF[2]);
             break;
           default:
             PanicAlertFmtT("Unknown Media Board Read");

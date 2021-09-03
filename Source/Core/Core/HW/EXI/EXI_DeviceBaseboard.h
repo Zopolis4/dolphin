@@ -18,7 +18,7 @@ public:
   void DoState(PointerWrap& p) override;
 
 private:
-  enum
+  enum class Command
   {
     init = 0x00
   };
