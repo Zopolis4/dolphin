@@ -33,9 +33,9 @@ void CEXIBaseboard::TransferByte(u8& byte)
   }
   else
   {
-    switch (m_command)
+    switch (static_cast<Command>(m_command))
     {
-    case init:
+    case Command::init:
     {
       static constexpr std::array<u8, 4> ID = {0x06, 0x04, 0x10, 0x00};
       byte = ID[(m_position - 2) & 3];
