@@ -28,8 +28,8 @@ enum class Platform;
 class VolumeTri : public VolumeDisc
 {
 public:
-  VolumeTri(std::unique_ptr<BlobReader> reader);
-  ~VolumeTri();
+  explicit VolumeTri(std::unique_ptr<BlobReader> reader);
+  ~VolumeTri() override;
   bool Read(u64 offset, u64 length, u8* buffer,
             const Partition& partition = PARTITION_NONE) const override;
   const FileSystem* GetFileSystem(const Partition& partition = PARTITION_NONE) const override;
