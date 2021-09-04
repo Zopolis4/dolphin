@@ -100,7 +100,7 @@ static std::unique_ptr<VolumeDisc> CreateDisc(std::unique_ptr<BlobReader>& reade
       return volume;
   }
 
-    // No known magic words found
+  // No known magic words found
   return nullptr;
 }
 
