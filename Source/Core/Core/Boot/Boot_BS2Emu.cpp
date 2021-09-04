@@ -165,8 +165,8 @@ bool CBoot::RunApploader(bool is_wii, const DiscIO::VolumeDisc& volume)
 
   if (volume.GetVolumeType() == DiscIO::Platform::Triforce)
   {
-    char* ptr = (char*)(Memory::GetPointer(0));
-    memset(ptr, 0, 12);
+    //char* ptr = (char*)(Memory::GetPointer(0));
+    Memory::Memset(0, 0, 12);
   }
 
   return true;
