@@ -4,6 +4,7 @@
 #include "DiscIO/VolumeGC.h"
 
 #include <cstddef>
+#include <charconv>
 #include <map>
 #include <memory>
 #include <optional>
@@ -54,6 +55,7 @@ VolumeGC::VolumeGC(std::unique_ptr<BlobReader> reader)
                                    reinterpret_cast<u8*>(&triforce_magic), sizeof(triforce_magic));
     if (file_size >= 4 && triforce_magic == BTID_MAGIC)
       m_is_triforce = true;
+      m_tri_id = triforce_header.id;
   }
 }
 
@@ -80,6 +82,18 @@ std::string VolumeGC::GetGameTDBID(const Partition& partition) const
 
   // Don't return an ID for Datel discs that are using the game ID of NHL Hitz 2002
   return game_id == "GNHE5d" && IsDatelDisc() ? "" : game_id;
+}
+
+std::optional<std::string> VolumeGC::GetTriID() const
+{
+  if (m_is_triforce)
+  {
+    return (std::string(m_tri_id.data(), m_tri_id.size()));
+  }
+  else
+  {
+    return {};
+  }
 }
 
 Region VolumeGC::GetRegion() const
