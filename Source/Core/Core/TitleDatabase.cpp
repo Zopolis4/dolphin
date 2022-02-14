@@ -130,7 +130,7 @@ const std::string& TitleDatabase::GetTitleName(const std::string& gametdb_id,
 const std::string& TitleDatabase::GetTriTitleName(const std::string& tri_id,
                                                   DiscIO::Language language) const
 {
-  if (!SConfig::GetInstance().m_use_builtin_title_database)
+  if (!Config::Get(Config::MAIN_USE_BUILT_IN_TITLE_DATABASE))
     return EMPTY_STRING;
 
   const Map& map = *m_trititle_maps.at(DiscIO::Language::English);
