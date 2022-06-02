@@ -79,6 +79,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mgba", "..\Externals\mGBA\m
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fmt", "..\Externals\fmt\fmt.vcxproj", "{4BC5A148-0AB3-440F-A980-A29B4B999190}"
 EndProject
+Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "UWP", "UWP\UWP.wapproj", "{030F34F4-C7BA-4E52-BD55-58E743EF3E5F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM64 = Debug|ARM64
@@ -379,6 +381,18 @@ Global
 		{4BC5A148-0AB3-440F-A980-A29B4B999190}.Release|ARM64.Build.0 = Release|ARM64
 		{4BC5A148-0AB3-440F-A980-A29B4B999190}.Release|x64.ActiveCfg = Release|x64
 		{4BC5A148-0AB3-440F-A980-A29B4B999190}.Release|x64.Build.0 = Release|x64
+		{030F34F4-C7BA-4E52-BD55-58E743EF3E5F}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{030F34F4-C7BA-4E52-BD55-58E743EF3E5F}.Debug|ARM64.Build.0 = Debug|ARM64
+		{030F34F4-C7BA-4E52-BD55-58E743EF3E5F}.Debug|ARM64.Deploy.0 = Debug|ARM64
+		{030F34F4-C7BA-4E52-BD55-58E743EF3E5F}.Debug|x64.ActiveCfg = Debug|x64
+		{030F34F4-C7BA-4E52-BD55-58E743EF3E5F}.Debug|x64.Build.0 = Debug|x64
+		{030F34F4-C7BA-4E52-BD55-58E743EF3E5F}.Debug|x64.Deploy.0 = Debug|x64
+		{030F34F4-C7BA-4E52-BD55-58E743EF3E5F}.Release|ARM64.ActiveCfg = Release|ARM64
+		{030F34F4-C7BA-4E52-BD55-58E743EF3E5F}.Release|ARM64.Build.0 = Release|ARM64
+		{030F34F4-C7BA-4E52-BD55-58E743EF3E5F}.Release|ARM64.Deploy.0 = Release|ARM64
+		{030F34F4-C7BA-4E52-BD55-58E743EF3E5F}.Release|x64.ActiveCfg = Release|x64
+		{030F34F4-C7BA-4E52-BD55-58E743EF3E5F}.Release|x64.Build.0 = Release|x64
+		{030F34F4-C7BA-4E52-BD55-58E743EF3E5F}.Release|x64.Deploy.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
