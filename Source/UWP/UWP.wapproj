@@ -71,7 +71,7 @@
     <QtPluginsSrc Include="@(QtPluginDlls -> '$(QtPath)\plugins\%(Identity)')" />
     <QtPluginsDst Include="@(QtPluginDlls -> '$(OutputPath)\QtPlugins\%(Identity)')" />
     <DataDir Include="..\..\Data\**\Sys\**\*.*" />
-    <QtConfFile>"..\Core\DolphinQt\qt.conf"</QtConfFile>
+    <QtConfFile> Include="..\Core\DolphinQt\qt.conf"</QtConfFile>
   </ItemGroup>
   <Target Name="AfterBuild" AfterTargets="Build">
     <Message Text="Copying Qt .dlls" Importance="High" />
@@ -88,5 +88,5 @@
 
     <Message Text="Copying license file" Importance="High" />
     <Copy SourceFiles="..\..\Data\license.txt" DestinationFolder="@(OutputPath)"/>
-  </Target
+  </Target>
 </Project>
