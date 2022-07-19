@@ -76,5 +76,51 @@
         }
       ]
     }
+    {
+      "name": "Release (UWP)",
+      "configurationType": "Release",
+      "generator": "Ninja",
+      "inheritEnvironments": [ "msvc_x64_x64" ],
+      "buildCommandArgs": "",
+      "buildRoot": "${workspaceRoot}\\Build\\${name}",
+      "cmakeCommandArgs": "",
+      "variables": [
+        {
+          "name": "CMAKE_PREFIX_PATH",
+          "value": "${workspaceRoot}\\Externals\\Qt\\Qt5.15.0\\winrt_x64_msvc2019"
+        },
+        {
+          "name": "CMAKE_SYSTEM_NAME",
+          "value": "WindowsStore"
+        },
+        {
+          "name": "CMAKE_SYSTEM_VERSION",
+          "value": "10.0"
+        }
+      ]
+    }
+    {
+      "name": "Debug (UWP)",
+      "configurationType": "Debug",
+      "generator": "Ninja",
+      "inheritEnvironments": [ "msvc_x64_x64" ],
+      "buildCommandArgs": "",
+      "buildRoot": "${workspaceRoot}\\Build\\${name}",
+      "cmakeCommandArgs": "",
+      "variables": [
+        {
+          "name": "CMAKE_PREFIX_PATH",
+          "value": "${workspaceRoot}\\Externals\\Qt\\Qt5.15.0\\winrt_x64_msvc2019"
+        },
+        {
+          "name": "CMAKE_SYSTEM_NAME",
+          "value": "WindowsStore"
+        },
+        {
+          "name": "CMAKE_SYSTEM_VERSION",
+          "value": "10.0"
+        }
+      ]
+    }
   ]
 }
