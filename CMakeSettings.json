@@ -87,7 +87,7 @@
       "variables": [
         {
           "name": "CMAKE_PREFIX_PATH",
-          "value": "${workspaceRoot}\\Externals\\Qt\\Qt5.15.5\\WINRT-x64"
+          "value": "${workspaceRoot}\\Externals\\Qt\\Qt5.15.0\\winrt_x64_msvc2019"
         },
         {
           "name": "CMAKE_SYSTEM_NAME",
