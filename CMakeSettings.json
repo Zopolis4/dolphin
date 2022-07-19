@@ -4,14 +4,15 @@
       "name": "Release",
       "configurationType": "Release",
       "generator": "Ninja",
-      "inheritEnvironments": [ "msvc_x64_x64" ],
+      "inheritEnvironments": [ "msvc_x64" ],
       "buildCommandArgs": "",
       "buildRoot": "${workspaceRoot}\\Build\\${name}",
       "cmakeCommandArgs": "",
       "variables": [
         {
           "name": "CMAKE_PREFIX_PATH",
-          "value": "${workspaceRoot}\\Externals\\Qt\\Qt6.3.0\\x64"
+          "value": "${workspaceRoot}\\Externals\\Qt\\Qt6.3.0\\x64",
+          "type": "STRING"
         }
       ]
     },
@@ -19,14 +20,15 @@
       "name": "Debug",
       "configurationType": "Debug",
       "generator": "Ninja",
-      "inheritEnvironments": [ "msvc_x64_x64" ],
+      "inheritEnvironments": [ "msvc_x64" ],
       "buildCommandArgs": "",
       "buildRoot": "${workspaceRoot}\\Build\\${name}",
       "cmakeCommandArgs": "",
       "variables": [
         {
           "name": "CMAKE_PREFIX_PATH",
-          "value": "${workspaceRoot}\\Externals\\Qt\\Qt6.3.0\\x64"
+          "value": "${workspaceRoot}\\Externals\\Qt\\Qt6.3.0\\x64",
+          "type": "STRING"
         }
       ]
     },
@@ -41,15 +43,18 @@
       "variables": [
         {
           "name": "CMAKE_PREFIX_PATH",
-          "value": "${workspaceRoot}\\Externals\\Qt\\Qt6.3.0\\ARM64"
+          "value": "${workspaceRoot}\\Externals\\Qt\\Qt6.3.0\\ARM64",
+          "type": "STRING"
         },
         {
           "name": "CMAKE_SYSTEM_NAME",
-          "value": "Windows"
+          "value": "Windows",
+          "type": "STRING"
         },
         {
           "name": "CMAKE_SYSTEM_PROCESSOR",
-          "value": "aarch64"
+          "value": "aarch64",
+          "type": "STRING"
         }
       ]
     },
@@ -64,15 +69,18 @@
       "variables": [
         {
           "name": "CMAKE_PREFIX_PATH",
-          "value": "${workspaceRoot}\\Externals\\Qt\\Qt6.3.0\\ARM64"
+          "value": "${workspaceRoot}\\Externals\\Qt\\Qt6.3.0\\ARM64",
+          "type": "STRING"
         },
         {
           "name": "CMAKE_SYSTEM_NAME",
-          "value": "Windows"
+          "value": "Windows",
+          "type": "STRING"
         },
         {
           "name": "CMAKE_SYSTEM_PROCESSOR",
-          "value": "aarch64"
+          "value": "aarch64",
+          "type": "STRING"
         }
       ]
     },
@@ -87,15 +95,23 @@
       "variables": [
         {
           "name": "CMAKE_PREFIX_PATH",
-          "value": "${workspaceRoot}\\Externals\\Qt\\Qt5.15.0\\winrt_x64_msvc2019"
+          "value": "${workspaceRoot}\\Externals\\Qt\\Qt5.15.0\\winrt_x64_msvc2019",
+          "type": "STRING"
         },
         {
           "name": "CMAKE_SYSTEM_NAME",
-          "value": "WindowsStore"
+          "value": "WindowsStore",
+          "type": "STRING"
         },
         {
           "name": "CMAKE_SYSTEM_VERSION",
-          "value": "10.0"
+          "value": "10.0",
+          "type": "STRING"
+        },
+        {
+          "name": "CMAKE_SYSTEM_PROCESSOR",
+          "value": "x86_64",
+          "type": "STRING"
         }
       ]
     },
@@ -110,15 +126,23 @@
       "variables": [
         {
           "name": "CMAKE_PREFIX_PATH",
-          "value": "${workspaceRoot}\\Externals\\Qt\\Qt5.15.0\\winrt_x64_msvc2019"
+          "value": "${workspaceRoot}\\Externals\\Qt\\Qt5.15.0\\winrt_x64_msvc2019",
+          "type": "STRING"
         },
         {
           "name": "CMAKE_SYSTEM_NAME",
-          "value": "WindowsStore"
+          "value": "WindowsStore",
+          "type": "STRING"
         },
         {
           "name": "CMAKE_SYSTEM_VERSION",
-          "value": "10.0"
+          "value": "10.0",
+          "type": "STRING"
+        },
+        {
+          "name": "CMAKE_SYSTEM_PROCESSOR",
+          "value": "x86_64",
+          "type": "STRING"
         }
       ]
     }
