@@ -76,5 +76,28 @@
         }
       ]
     }
+    {
+      "name": "UWP",
+      "configurationType": "Release",
+      "generator": "Ninja",
+      "inheritEnvironments": [ "msvc_x64_x64" ],
+      "buildCommandArgs": "",
+      "buildRoot": "${workspaceRoot}\\Build\\${name}",
+      "cmakeCommandArgs": "",
+      "variables": [
+        {
+          "name": "CMAKE_PREFIX_PATH",
+          "value": "${workspaceRoot}\\Externals\\Qt\\Qt5.15.5\\WINRT-x64"
+        },
+        {
+          "name": "CMAKE_SYSTEM_NAME",
+          "value": "WindowsStore"
+        },
+        {
+          "name": "CMAKE_SYSTEM_VERSION",
+          "value": "10.0"
+        }
+      ]
+    }
   ]
 }
