@@ -75,7 +75,7 @@
           "value": "aarch64"
         }
       ]
-    }
+    },
     {
       "name": "Release (UWP)",
       "configurationType": "Release",
@@ -98,7 +98,7 @@
           "value": "10.0"
         }
       ]
-    }
+    },
     {
       "name": "Debug (UWP)",
       "configurationType": "Debug",
