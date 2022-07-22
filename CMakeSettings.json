@@ -112,6 +112,11 @@
           "name": "CMAKE_SYSTEM_PROCESSOR",
           "value": "x86_64",
           "type": "STRING"
+        },
+        {
+          "name": "ENABLE_SDL",
+          "value": "False",
+          "type": "BOOL"
         }
       ]
     },
@@ -143,6 +148,11 @@
           "name": "CMAKE_SYSTEM_PROCESSOR",
           "value": "x86_64",
           "type": "STRING"
+        },
+        {
+          "name": "ENABLE_SDL",
+          "value": "False",
+          "type": "BOOL"
         }
       ]
     }
