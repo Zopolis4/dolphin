@@ -67,14 +67,11 @@ u64 CFileSystemGCWii::ReadFile(const char* _rFullPath, u8* _pBuffer, size_t _Max
 	if (pFileInfo == NULL)
 		return 0;
 
-	if (pFileInfo->m_FileSize > _MaxBufferSize)
-		return 0;
-
-	DEBUG_LOG(DISCIO, "Filename: %s. Offset: %llx. Size: %llx",_rFullPath,
-		pFileInfo->m_Offset, pFileInfo->m_FileSize);
-
-	m_rVolume->Read(pFileInfo->m_Offset, pFileInfo->m_FileSize, _pBuffer);
-	return pFileInfo->m_FileSize;
+    size_t size = std::min( (size_t)pFileInfo->m_FileSize, (size_t)_MaxBufferSize);
+    DEBUG_LOG(DISCIO, "Filename: %s. Offset: %llx. File Size: %llx, Read len: %llx",_rFullPath,
+        pFileInfo->m_Offset, pFileInfo->m_FileSize, size);
+    m_rVolume->Read(pFileInfo->m_Offset, size, _pBuffer);
+    return size;
 }
 
 bool CFileSystemGCWii::ExportFile(const char* _rFullPath, const char* _rExportFilename)

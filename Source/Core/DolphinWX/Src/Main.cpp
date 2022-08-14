@@ -127,6 +127,7 @@ bool DolphinApp::OnInit()
 	bool UseLogger = false;
 	bool selectVideoBackend = false;
 	bool selectAudioEmulation = false;
+	bool disableBackupMemory = false;
 
 	wxString videoBackendName;
 	wxString audioEmulationName;
@@ -180,6 +181,11 @@ bool DolphinApp::OnInit()
 			"User folder path",
 			wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL
 		},
+	  {
+			wxCMD_LINE_SWITCH, "nb", "no-backup-mem",
+			"Disables support for Triforce Backup Memory",
+			wxCMD_LINE_VAL_NONE, wxCMD_LINE_PARAM_OPTIONAL
+		},
 		{
 			wxCMD_LINE_NONE, NULL, NULL, NULL, wxCMD_LINE_VAL_NONE, 0
 		}
@@ -192,6 +198,7 @@ bool DolphinApp::OnInit()
 		return false;
 	} 
 
+	disableBackupMemory = parser.Found(wxT("no-backup-mem"));
 	UseDebugger = parser.Found(wxT("debugger"));
 	UseLogger = parser.Found(wxT("logger"));
 	LoadFile = parser.Found(wxT("exec"), &FileToLoad);
@@ -277,6 +284,11 @@ bool DolphinApp::OnInit()
 	SConfig::Init();
 	VideoBackend::PopulateList();
 	WiimoteReal::LoadSettings();
+
+	if(disableBackupMemory)
+	{
+		SConfig::GetInstance().m_LocalCoreStartupParameter.m_AMbaseboardSupportBackupMemory = false;
+	}
 
 	if (selectVideoBackend && videoBackendName != wxEmptyString)
 		SConfig::GetInstance().m_LocalCoreStartupParameter.m_strVideoBackend =

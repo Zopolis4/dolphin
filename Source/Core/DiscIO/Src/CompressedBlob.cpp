@@ -48,9 +48,15 @@ CompressedBlobReader::CompressedBlobReader(const char *filename)
 CompressedBlobReader* CompressedBlobReader::Create(const char* filename)
 {
 	if (IsCompressedBlob(filename))
-		return new CompressedBlobReader(filename);
+	{
+		CompressedBlobReader* reader = new CompressedBlobReader(filename);
+		reader->filen = new std::string(filename);
+		return reader;
+	}
 	else
+	{
 		return 0;
+	}
 }
 
 CompressedBlobReader::~CompressedBlobReader()

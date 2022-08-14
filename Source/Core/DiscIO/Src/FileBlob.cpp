@@ -17,9 +17,15 @@ PlainFileReader* PlainFileReader::Create(const char* filename)
 {
 	File::IOFile f(filename, "rb");
 	if (f)
-		return new PlainFileReader(f.ReleaseHandle());
+	{
+		PlainFileReader* reader = new PlainFileReader(f.ReleaseHandle());
+		reader->filen = new std::string(filename);
+		return reader;
+	}
 	else
+	{
 		return NULL;
+	}
 }
 
 bool PlainFileReader::Read(u64 offset, u64 nbytes, u8* out_ptr)

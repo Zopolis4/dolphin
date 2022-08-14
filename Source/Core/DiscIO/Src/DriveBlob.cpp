@@ -78,6 +78,8 @@ DriveReader *DriveReader::Create(const char *drive)
 		delete reader;
 		return 0;
 	}
+
+	reader->filen = new std::string(drive);
 	return reader;
 }
 

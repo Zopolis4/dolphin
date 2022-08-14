@@ -103,7 +103,7 @@ CSIDevice_AMBaseboard::CSIDevice_AMBaseboard(SIDevices device, int _iDeviceNumbe
 	m_card_bit = 0;
 	m_card_state_call_count = 0;
 
-	m_controltype	= 0;
+	m_controltype	= CONTROLS_UNINITIALIZED;
 
 	m_wheelinit		= 0;
 
@@ -183,7 +183,7 @@ int CSIDevice_AMBaseboard::RunBuffer(u8* _pBuffer, int _iLength)
 					case 0x11:
 					{
 						NOTICE_LOG(AMBASEBOARDDEBUG, "GC-AM: Command 11, %02x (READ SERIAL NR)", ptr(1));
-						char string[] = "AADE-01A14964511";
+						char string[] = "BEVI-ILBRODOSTAR";
 						res[resp++] = 0x11;
 						res[resp++] = 0x10;
 						memcpy(res + resp, string, 0x10);
@@ -792,7 +792,10 @@ int CSIDevice_AMBaseboard::RunBuffer(u8* _pBuffer, int _iLength)
 									Pad::GetStatus(0, &PadStatus);
 
 									// Test button
-									if( PadStatus.button & PAD_BUTTON_Y )
+									// Test button mapping
+									uint16_t test_button_mapping = (PAD_TRIGGER_Z | PAD_BUTTON_Y | PAD_BUTTON_RIGHT | PAD_BUTTON_A);
+
+									if( (PadStatus.button & test_button_mapping) == test_button_mapping)
 										msg.addData(0x80);
 									else
 										msg.addData(0x00);									

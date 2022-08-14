@@ -16,6 +16,7 @@
 // automatically do the right thing.
 
 #include "CommonTypes.h"
+#include <string>
 
 namespace DiscIO
 {
@@ -29,6 +30,8 @@ public:
 	virtual u64 GetDataSize() const = 0;
 	// NOT thread-safe - can't call this from multiple threads.
 	virtual bool Read(u64 offset, u64 size, u8* out_ptr) = 0;
+
+	std::string * filen = nullptr;
 
 protected:
 	IBlobReader() {}
@@ -76,4 +79,3 @@ bool DecompressBlobToFile(const char *infile, const char *outfile,
 }  // namespace
 
 #endif
-

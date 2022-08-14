@@ -5,6 +5,8 @@
 #include "VolumeGC.h"
 #include "StringUtil.h"
 #include "FileMonitor.h"
+#include "Filesystem.h"
+#include "VolumeCreator.h"
 
 namespace DiscIO
 {
@@ -39,15 +41,61 @@ std::string CVolumeGC::GetUniqueID() const
 	if (m_pReader == NULL)
 		return NO_UID;
 
-	char ID[7];
-
-	if (!Read(0, sizeof(ID), reinterpret_cast<u8*>(ID)))
+	char ID[12] = {0};
+	// Game Code + Maker Code in Disk Header (at offset 0) are 6 bytes
+	if (!Read(0, 6, reinterpret_cast<u8*>(ID)))
 	{
 		PanicAlertT("Failed to read unique ID from disc image");
 		return NO_UID;
 	}
 
-	ID[6] = '\0';
+	// Read boot.id at offset 0x30 (4byte ASCII real game UniqueID), and 1 byte for null terminator
+	u8 bootid_buff[0x34] = {0};
+
+	if( !m_pReader || (m_pReader && !(m_pReader->filen)) )
+	{
+		ERROR_LOG(DISCIO, "Volume reader or filename is invalid");
+		return ID;
+	}
+
+	DiscIO::IVolume* pVolume = DiscIO::CreateVolumeFromFilename( m_pReader->filen->c_str() );
+	if(!pVolume)
+	{
+		ERROR_LOG(DISCIO, "Invalid volume");
+		return ID;
+	}
+
+	DiscIO::IFileSystem* pFileSystem = DiscIO::CreateFileSystem(pVolume);
+	if(!pFileSystem)
+	{
+		ERROR_LOG(DISCIO, "Invalid file system");
+		return ID;
+	}
+
+	u64 res = pFileSystem->ReadFile("boot.id", bootid_buff, sizeof(bootid_buff));
+	if(res == sizeof(bootid_buff))
+	{
+		u8 * game_uuid = bootid_buff + 0x30;
+
+		// Check for String ASCII sanity
+		bool game_uuid_sane = true;
+		for(int i=0 ; i<4 ; i++)
+		{
+			u8 c = game_uuid[i];
+			if( (c < 'A' || c > 'Z') && (c < '0' || c > '9') )
+			{
+				game_uuid_sane = false;
+				break;
+			}
+		}
+
+		// Append game UUID if sane
+		if(game_uuid_sane)
+		{
+			snprintf(ID + 6, sizeof(ID)-6, "-%s", game_uuid);
+			ID[11] = 0;
+		}
+	}
 
 	return ID;
 }

@@ -31,6 +31,13 @@ private:
 		CARD_80				= 0x80,
 	};
 
+	enum eControlTypes
+	{
+		CONTROLS_UNINITIALIZED = 0,
+		CONTROLS_VIRTUASTRIKER2002,
+		CONTROLS_VIRTUASTRIKER4,
+	};
+
 	unsigned short m_coin[2];
 	int m_coin_pressed[2];
 	

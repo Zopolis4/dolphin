@@ -171,6 +171,7 @@ WbfsFileReader* WbfsFileReader::Create(const char* filename)
 
 	if(reader->IsGood())
 	{
+		reader->filen = new std::string(filename);
 		return reader;
 	}
 	else

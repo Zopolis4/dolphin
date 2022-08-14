@@ -33,7 +33,9 @@ CISOFileReader* CISOFileReader::Create(const char* filename)
 	if (IsCISOBlob(filename))
 	{
 		File::IOFile f(filename, "rb");
-		return new CISOFileReader(f.ReleaseHandle());
+		CISOFileReader* fr = new CISOFileReader(f.ReleaseHandle());
+		fr->filen = new std::string(filename);
+		return fr;
 	}
 	else
 		return NULL;

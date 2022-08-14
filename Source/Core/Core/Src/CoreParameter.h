@@ -202,6 +202,8 @@ struct SCoreStartupParameter
 	std::string m_strGameIniDefaultRevisionSpecific;
 	std::string m_strGameIniLocal;
 
+	bool m_AMbaseboardSupportBackupMemory = true;
+
 	// Constructor just calls LoadDefaults
 	SCoreStartupParameter();
 
