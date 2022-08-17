@@ -4,6 +4,7 @@
 #include "Common/CPUDetect.h"
 
 #ifdef _WIN32
+#include <windows.h>
 #include <processthreadsapi.h>
 #endif
 
