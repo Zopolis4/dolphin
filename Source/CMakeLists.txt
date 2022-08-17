@@ -25,9 +25,11 @@ endif()
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-if (MSVC)
-  # Compile PCH
-  add_subdirectory(PCH)
+if (NOT CMAKE_SYSTEM_NAME MATCHES "WindowsStore")
+  if (MSVC)
+    # Compile PCH
+    add_subdirectory(PCH)
+  endif()
 else()
   check_and_add_flag(HAVE_WALL -Wall)
   # TODO: would like these but they produce overwhelming amounts of warnings
