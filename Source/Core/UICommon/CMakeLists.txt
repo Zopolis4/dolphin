@@ -69,7 +69,9 @@ if(USE_DISCORD_PRESENCE)
   target_link_libraries(uicommon PRIVATE discord-rpc)
 endif()
 
-if(MSVC)
-  # Add precompiled header
-  target_link_libraries(uicommon PRIVATE use_pch)
+if (NOT CMAKE_SYSTEM_NAME MATCHES "WindowsStore")
+  if (MSVC)
+    # Add precompiled header
+    target_link_libraries(uicommon PRIVATE use_pch)
+  endif()
 endif()

@@ -34,7 +34,9 @@ PRIVATE
   ${X11_LIBRARIES}
 )
 
-if(MSVC)
-  # Add precompiled header
-  target_link_libraries(videoogl PRIVATE use_pch)
+if (NOT CMAKE_SYSTEM_NAME MATCHES "WindowsStore")
+  if (MSVC)
+    # Add precompiled header
+    target_link_libraries(videogl PRIVATE use_pch)
+  endif()
 endif()

@@ -30,7 +30,9 @@ PUBLIC
   videod3dcommon
 )
 
-if(MSVC)
-  # Add precompiled header
-  target_link_libraries(videod3d PRIVATE use_pch)
+if (NOT CMAKE_SYSTEM_NAME MATCHES "WindowsStore")
+  if (MSVC)
+    # Add precompiled header
+    target_link_libraries(videod3d PRIVATE use_pch)
+  endif()
 endif()

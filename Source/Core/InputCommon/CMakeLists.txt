@@ -182,7 +182,9 @@ if(SDL2_FOUND)
   target_link_libraries(inputcommon PRIVATE SDL2::SDL2)
 endif()
 
-if(MSVC)
-  # Add precompiled header
-  target_link_libraries(inputcommon PRIVATE use_pch)
+if (NOT CMAKE_SYSTEM_NAME MATCHES "WindowsStore")
+  if (MSVC)
+    # Add precompiled header
+    target_link_libraries(inputcommon PRIVATE use_pch)
+  endif()
 endif()

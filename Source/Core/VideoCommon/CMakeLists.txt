@@ -220,7 +220,9 @@ SYSTEM PRIVATE
   ${CMAKE_SOURCE_DIR}/Externals/glslang
 )
 
-if(MSVC)
-  # Add precompiled header
-  target_link_libraries(videocommon PRIVATE use_pch)
+if (NOT CMAKE_SYSTEM_NAME MATCHES "WindowsStore")
+  if (MSVC)
+    # Add precompiled header
+    target_link_libraries(videocommon PRIVATE use_pch)
+  endif()
 endif()

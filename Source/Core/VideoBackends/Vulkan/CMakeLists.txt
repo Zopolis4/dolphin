@@ -54,7 +54,9 @@ PRIVATE
   ${CMAKE_SOURCE_DIR}/Externals/Vulkan/Include
 )
 
-if(MSVC)
-  # Add precompiled header
-  target_link_libraries(videovulkan PRIVATE use_pch)
+if (NOT CMAKE_SYSTEM_NAME MATCHES "WindowsStore")
+  if (MSVC)
+    # Add precompiled header
+    target_link_libraries(videovulkan PRIVATE use_pch)
+  endif()
 endif()

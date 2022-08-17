@@ -26,9 +26,11 @@ PRIVATE
   cpp-optparse
 )
 
-if(MSVC)
-  # Add precompiled header
-  target_link_libraries(dolphin-nogui PRIVATE use_pch)
+if (NOT CMAKE_SYSTEM_NAME MATCHES "WindowsStore")
+  if (MSVC)
+    # Add precompiled header
+    target_link_libraries(dolphin-nogui PRIVATE use_pch)
+  endif()
 endif()
 
 if(USE_DISCORD_PRESENCE)

@@ -13,7 +13,9 @@ target_link_libraries(winupdater PRIVATE
 
 set_target_properties(winupdater PROPERTIES OUTPUT_NAME "Updater")
 
-if(MSVC)
-  # Add precompiled header
-  target_link_libraries(winupdater PRIVATE use_pch)
+if (NOT CMAKE_SYSTEM_NAME MATCHES "WindowsStore")
+  if (MSVC)
+    # Add precompiled header
+    target_link_libraries(winupdater PRIVATE use_pch)
+  endif()
 endif()

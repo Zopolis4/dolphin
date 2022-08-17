@@ -19,9 +19,11 @@ PRIVATE
   cpp-optparse
 )
 
-if(MSVC)
-  # Add precompiled header
-  target_link_libraries(dolphin-tool PRIVATE use_pch)
+if (NOT CMAKE_SYSTEM_NAME MATCHES "WindowsStore")
+  if (MSVC)
+    # Add precompiled header
+    target_link_libraries(dolphin-tool PRIVATE use_pch)
+  endif()
 endif()
 
 set(CPACK_PACKAGE_EXECUTABLES ${CPACK_PACKAGE_EXECUTABLES} dolphin-tool)
