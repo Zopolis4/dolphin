@@ -9,6 +9,9 @@ target_link_libraries(winupdater PRIVATE
   uicommon
   updatercommon
   Comctl32
+  User32
+  Shell32
+  Gdi32
 )
 
 set_target_properties(winupdater PROPERTIES OUTPUT_NAME "Updater")

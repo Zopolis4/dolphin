@@ -150,6 +150,7 @@ PRIVATE
   ${ICONV_LIBRARIES}
   png
   ${VTUNE_LIBRARIES}
+  Gdi32
 )
 
 if (APPLE)

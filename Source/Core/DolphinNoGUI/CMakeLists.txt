@@ -24,6 +24,7 @@ PRIVATE
   core
   uicommon
   cpp-optparse
+  Gdi32
 )
 
 if (NOT CMAKE_SYSTEM_NAME MATCHES "WindowsStore")
