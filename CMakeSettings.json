@@ -117,13 +117,18 @@
           "name": "ENABLE_SDL",
           "value": "False",
           "type": "BOOL"
+        },
+        {
+          "name": "USE_DISCORD_PRESCENCE",
+          "value": "False",
+          "type": "BOOL"
         }
       ]
     },
     {
       "name": "Debug (UWP)",
       "configurationType": "Debug",
-      "generator": "Ninja",
+      "generator": "Visual Studio 17 2022 Win64",
       "inheritEnvironments": [ "msvc_x64_x64" ],
       "buildCommandArgs": "",
       "buildRoot": "${workspaceRoot}\\Build\\${name}",
@@ -151,6 +156,11 @@
         },
         {
           "name": "ENABLE_SDL",
+          "value": "False",
+          "type": "BOOL"
+        },
+        {
+          "name": "USE_DISCORD_PRESCENCE",
           "value": "False",
           "type": "BOOL"
         }
