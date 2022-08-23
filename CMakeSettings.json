@@ -119,7 +119,7 @@
           "type": "BOOL"
         },
         {
-          "name": "USE_DISCORD_PRESCENCE",
+          "name": "USE_DISCORD_PRESENCE",
           "value": "False",
           "type": "BOOL"
         }
@@ -160,7 +160,7 @@
           "type": "BOOL"
         },
         {
-          "name": "USE_DISCORD_PRESCENCE",
+          "name": "USE_DISCORD_PRESENCE",
           "value": "False",
           "type": "BOOL"
         }
