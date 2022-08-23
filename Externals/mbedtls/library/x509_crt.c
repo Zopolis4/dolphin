@@ -1551,6 +1551,7 @@ int mbedtls_x509_crt_parse_path( mbedtls_x509_crt *chain, const char *path )
     char filename[MAX_PATH];
     char *p;
     size_t len = strlen( path );
+    int lengthAsInt = 0;
 
     WIN32_FIND_DATAW file_data;
     HANDLE hFind;
@@ -1566,6 +1567,18 @@ int mbedtls_x509_crt_parse_path( mbedtls_x509_crt *chain, const char *path )
     filename[len++] = '*';
 
     w_ret = MultiByteToWideChar( CP_ACP, 0, filename, (int)len, szDir,
+    if ( FAILED ( SizeTToInt( len, &lengthAsInt ) ) )
+        return( MBEDTLS_ERR_X509_FILE_IO_ERROR );
+
+    /*
+     * Note this function uses the code page CP_ACP, and assumes the incoming
+     * string is encoded in ANSI, before translating it into Unicode. If the
+     * incoming string were changed to be UTF-8, then the length check needs to
+     * change to check the number of characters, not the number of bytes, in the
+     * incoming string are less than MAX_PATH to avoid a buffer overrun with
+     * MultiByteToWideChar().
+     */
+    w_ret = MultiByteToWideChar( CP_ACP, 0, filename, lengthAsInt, szDir,
                                  MAX_PATH - 3 );
     if( w_ret == 0 )
         return( MBEDTLS_ERR_X509_BAD_INPUT_DATA );
@@ -1582,8 +1595,11 @@ int mbedtls_x509_crt_parse_path( mbedtls_x509_crt *chain, const char *path )
         if( file_data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY )
             continue;
 
+        if ( FAILED( SizeTToInt( wcslen( file_data.cFileName ), &lengthAsInt ) ) )
+            return( MBEDTLS_ERR_X509_FILE_IO_ERROR );
+
         w_ret = WideCharToMultiByte( CP_ACP, 0, file_data.cFileName,
-                                     lstrlenW( file_data.cFileName ),
+                                     lengthAsInt,
                                      p, (int) len - 1,
                                      NULL, NULL );
         if( w_ret == 0 )
